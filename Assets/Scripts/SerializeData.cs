@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class SerializeData : MonoBehaviour {
     public static string inventoryJsonPath;
+    private static string itemsJsonPath = (Directory.GetCurrentDirectory() + "/Assets/Resources/items.json");
+
 
     public static Inventory loadJson()
     {
@@ -30,6 +32,30 @@ public class SerializeData : MonoBehaviour {
         }
         File.WriteAllText(inventoryJsonPath, Json);
     }
+    public static ItemCollection loadJsonitem()
+    {
+        if (!File.Exists(itemsJsonPath))
+        {
+            return new ItemCollection();
+        }
+        string dataAsJson = File.ReadAllText(itemsJsonPath);
+        if (dataAsJson.Equals(""))
+        {
+            return new ItemCollection();
+        }
+        ItemCollection curData = JsonUtility.FromJson<ItemCollection>(dataAsJson);
+        return curData;
+    }
 
-    
+    public static void saveJson(ItemCollection i)
+    {
+        string Json = JsonUtility.ToJson(i);
+        if (!File.Exists(itemsJsonPath))
+        {
+            File.Create(itemsJsonPath);
+        }
+        File.WriteAllText(itemsJsonPath, Json);
+    }
+
+
 }

@@ -10,14 +10,16 @@ public class AttackUI : MonoBehaviour {
 
     public void setUpAttackButtons() {
         for(int i = 0; i<buttons.Length;i++) {
-            if (player.attacks[i] != null) {
+            if (player.attacks.Length>i) {
                 buttons[i].GetComponent<Button>().interactable = true;
-                buttons[i].GetComponent<Text>().text = player.attacks[i].attackName;
+                buttons[i].GetComponentInChildren<Text>().text = player.attacks[i].attackName;
             } else {
                 buttons[i].GetComponent<Button>().interactable = false;
-                buttons[i].GetComponent<Text>().text = "-";
+                buttons[i].GetComponentInChildren<Text>().text = "-";
             }
         }
     }
+
+    
 
 }

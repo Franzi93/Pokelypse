@@ -1,18 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-
+   
+    public Creature[] creatures;
+    public bool inFight = false;
     public float moveSpeed;
+    public UIManager manager;
 
     private Animator anim;
 
     private bool playerMoving;
     private Vector2 LastMove;
-
 	// Use this for initialization
 	void Start () {
+       
+        
         anim = GetComponent<Animator>();		
 	}
 	
@@ -39,5 +44,14 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool("PlayerMoving", playerMoving);
         anim.SetFloat("LastMoveX", LastMove.x);
         anim.SetFloat("LastMoveY", LastMove.y);
+    }
+
+    void OnTriggerEnter2D(Collider2D coll) {
+        if (coll.tag.Equals("Creature") && coll.gameObject.GetComponent<Captured>() == null && !inFight)
+        {
+            Creature c = coll.gameObject.GetComponent<Creature>();
+            manager.startFight(creatures[0],c);
+            inFight = true;
+        }
     }
 }

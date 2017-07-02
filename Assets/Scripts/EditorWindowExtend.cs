@@ -15,7 +15,8 @@ public class EditorWindowExtend : EditorWindow
 
 
     [SerializeField]
-    ItemDatabase coll;
+    ItemCollection coll;
+
     /// <summary>
     /// opens the question editorwindow
     /// </summary>
@@ -27,14 +28,11 @@ public class EditorWindowExtend : EditorWindow
     }
     void OnEnable() {
         string dataAsJson = File.ReadAllText(itemsJsonPath);
-        if (dataAsJson.Equals(""))
+        coll = new ItemCollection();
+        if (!dataAsJson.Equals(""))
         {
-            coll = new ItemDatabase();
+            EditorJsonUtility.FromJsonOverwrite(dataAsJson,coll);
         }
-        else {
-            coll = JsonUtility.FromJson<ItemDatabase>(dataAsJson);
-        }
-
     }
 
     void Update()
@@ -84,12 +82,13 @@ public class EditorWindowExtend : EditorWindow
 
     void OnLostFocus()
     {
-        string Json = JsonUtility.ToJson(coll);
+        string Json = EditorJsonUtility.ToJson(coll);
         if (!File.Exists(itemsJsonPath))
         {
             File.Create(itemsJsonPath);
         }
         File.WriteAllText(itemsJsonPath, Json);
+        coll = SerializeData.loadJsonitem();
     }
     /// <summary>
     /// draws gui for output tab
@@ -115,18 +114,18 @@ public class EditorWindowExtend : EditorWindow
     {
         EditorGUILayout.Separator();
         items();
+        if (GUILayout.Button("New Item", GUILayout.Width(100)))
+        {
+            coll.newItem();
+        }
         if (GUILayout.Button("save", GUILayout.Width(100)))
         {
-            string Json = JsonUtility.ToJson(coll);
+            string Json = EditorJsonUtility.ToJson(coll);
             if (!File.Exists(itemsJsonPath))
             {
                 File.Create(itemsJsonPath);
             }
             File.WriteAllText(itemsJsonPath, Json);
-        }
-        if (GUILayout.Button("New Item", GUILayout.Width(100)))
-        {
-            coll.newItem();
         }
             
     }
@@ -141,6 +140,8 @@ public class EditorWindowExtend : EditorWindow
             if (i.stackable) {
                 i.stacksizemax = EditorGUILayout.IntField("max stack", i.stacksizemax);
             }
+            i.vitality = EditorGUILayout.IntField("vitality", i.vitality);
+            i.value = EditorGUILayout.IntField("value", i.value);
             GUILayout.Space(10);
         }
         

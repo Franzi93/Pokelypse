@@ -12,8 +12,8 @@ public class Creature : MonoBehaviour {
     public int maxHP = 10;
     public int currHP = 10;
 
-    public int strenght = 5;
-    public int defense = 5;
+    public int physicalStrenght = 5;
+    public int physicalDefense = 5;
     public int magicalStrenght = 5;
     public int magicalDefense = 5;
     public int initiative = 5;
@@ -65,8 +65,14 @@ public class Creature : MonoBehaviour {
     }
 
     public void attack(Attack _a,Creature _opponent) {
+        if (UnityEngine.Random.Range(1, 100) > _a.hitChance) {
+            return;
+        }
+        int typedAttack = _a.aType == attackType.MAGICAL ? magicalStrenght : physicalStrenght;
+        int typedDefense = _a.aType == attackType.MAGICAL ? _opponent.magicalDefense : _opponent.physicalDefense;
+        
         int damage;
-        damage = _a.strength / 100 * strenght;
+        damage = _a.strength  * typedAttack /100;
         if (_opponent.currHP - damage < 0)
         {
             _opponent.currHP = 0;
