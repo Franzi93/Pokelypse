@@ -12,7 +12,7 @@ public class FightStateMachine : MonoBehaviour{
 
     public Dialog fightDialog;
     public GameObject attackUI;
-    
+    FightUI att;
 
     public bool playerWon = false;
 
@@ -22,9 +22,10 @@ public class FightStateMachine : MonoBehaviour{
     void OnEnable() {
         controll.enabled = false;
         state = player.initiative > enemy.initiative ? TurnState.PLAYER : TurnState.ENEMY;
-        AttackUI att = GetComponent<AttackUI>();
+        att = GetComponent<FightUI>();
         att.player = player;
         att.setUpAttackButtons();
+        att.updateHealth();
     }
 	
 	// Update is called once per frame
@@ -33,6 +34,7 @@ public class FightStateMachine : MonoBehaviour{
             case (TurnState.ENEMY):
                 attackUI.gameObject.SetActive(false);
                 enemy.attack(enemy.attacks[0], player);
+                att.updateHealth();
                 state = TurnState.PLAYER;
                 break;
             case (TurnState.PLAYER):

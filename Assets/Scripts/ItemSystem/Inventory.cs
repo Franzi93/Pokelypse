@@ -15,7 +15,7 @@ public class Inventory : MonoBehaviour {
     public List<Item> items = new List<Item>();
     public List<GameObject> slots = new List<GameObject>();
 
-    void Start() {
+/*    void Start() {
 
         slotAmount = 16;
         inventoryPanel = GameObject.Find("Inventory");
@@ -26,7 +26,7 @@ public class Inventory : MonoBehaviour {
             slots[i].transform.SetParent(slotPanel.transform);
         }
 
-    }
+    }*/
 
     public void addItem(int _id) {
         Item itemToAdd = database.FetchItemByID(_id);

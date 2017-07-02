@@ -11,6 +11,7 @@ public class Creature : MonoBehaviour {
     public int level = 1;
     public int maxHP = 10;
     public int currHP = 10;
+    public Dictionary<int, Attack> learnsAttackAtLVL = new Dictionary<int, Attack>();
 
     public int physicalStrenght = 5;
     public int physicalDefense = 5;
@@ -22,7 +23,7 @@ public class Creature : MonoBehaviour {
     public int needEXPToLvlUp = 5;
     public int givesEXP = 5;
 
-    public Attack[] attacks;
+    public List<Attack> attacks;
 
     void startUp() {
         givesEXP *= level;
@@ -62,6 +63,15 @@ public class Creature : MonoBehaviour {
         needEXPToLvlUp *= 2;
         givesEXP *= 2;
         ++level;
+        if (learnsAttackAtLVL.ContainsKey(level)) {
+            if (attacks.Count == 4)
+            {
+                //forget dialog
+            }
+            else {
+                attacks.Add(learnsAttackAtLVL[level]);
+            }
+        }
     }
 
     public void attack(Attack _a,Creature _opponent) {
