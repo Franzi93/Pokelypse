@@ -19,6 +19,8 @@ public class Creature : MonoBehaviour {
     public int magicalDefense = 5;
     public int initiative = 5;
 
+    public int spawnRate;
+
     public int currEXP;
     public int needEXPToLvlUp = 5;
     public int givesEXP = 5;
