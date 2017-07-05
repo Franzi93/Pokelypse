@@ -27,24 +27,20 @@ public class EditorWindowExtend : EditorWindow
         window.Show();
     }
     void OnEnable() {
-        string dataAsJson = File.ReadAllText(itemsJsonPath);
-        coll = new ItemCollection();
-        if (!dataAsJson.Equals(""))
-        {
-            EditorJsonUtility.FromJsonOverwrite(dataAsJson,coll);
-        }
+        
     }
 
     void Update()
     {
         if (coll == null) {
-            File.Create(itemsJsonPath);
+            coll = SerializeData.loadJsonitem();
         }
 
     }
 
     void OnGUI()
     {
+
         //draws editor gui
         GUILayout.Space(15);
         GUILayout.BeginHorizontal();
@@ -82,13 +78,7 @@ public class EditorWindowExtend : EditorWindow
 
     void OnLostFocus()
     {
-        string Json = EditorJsonUtility.ToJson(coll);
-        if (!File.Exists(itemsJsonPath))
-        {
-            File.Create(itemsJsonPath);
-        }
-        File.WriteAllText(itemsJsonPath, Json);
-        coll = SerializeData.loadJsonitem();
+        SerializeData.saveJson(coll);
     }
     /// <summary>
     /// draws gui for output tab
@@ -120,12 +110,9 @@ public class EditorWindowExtend : EditorWindow
         }
         if (GUILayout.Button("save", GUILayout.Width(100)))
         {
-            string Json = EditorJsonUtility.ToJson(coll);
-            if (!File.Exists(itemsJsonPath))
-            {
-                File.Create(itemsJsonPath);
-            }
-            File.WriteAllText(itemsJsonPath, Json);
+            string dataAsJson = JsonUtility.ToJson(coll);
+            
+            File.WriteAllText(itemsJsonPath, dataAsJson);
         }
             
     }
@@ -133,17 +120,25 @@ public class EditorWindowExtend : EditorWindow
 
     void items()
     {
-        foreach (Item i in coll.items) {
-            i.id = EditorGUILayout.IntField("id", i.id);
-            i.title = EditorGUILayout.TextField("name",i.title);
-            i.stackable = EditorGUILayout.Toggle("stackable",i.stackable);
-            if (i.stackable) {
-                i.stacksizemax = EditorGUILayout.IntField("max stack", i.stacksizemax);
+        if (coll != null)
+        {
+           
+            foreach (Item i in coll.items)
+            {
+                i.id = EditorGUILayout.IntField("id", i.id);
+                i.title = EditorGUILayout.TextField("name", i.title);
+                i.stackable = EditorGUILayout.Toggle("stackable", i.stackable);
+                if (i.stackable)
+                {
+                    i.stacksizemax = EditorGUILayout.IntField("max stack", i.stacksizemax);
+                }
+                i.vitality = EditorGUILayout.IntField("vitality", i.vitality);
+                i.value = EditorGUILayout.IntField("value", i.value);
+                GUILayout.Space(10);
             }
-            i.vitality = EditorGUILayout.IntField("vitality", i.vitality);
-            i.value = EditorGUILayout.IntField("value", i.value);
-            GUILayout.Space(10);
+
         }
+        
         
     }
 }

@@ -4,8 +4,8 @@ using System.IO;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-   
-    public Creature[] creatures;
+
+    public List<Creature> creatures = new List<Creature>();
     public bool inFight = false;
     public float moveSpeed;
     public UIManager manager;
@@ -50,8 +50,19 @@ public class PlayerController : MonoBehaviour {
         if (coll.tag.Equals("Creature") && coll.gameObject.GetComponent<Captured>() == null && !inFight)
         {
             Creature c = coll.gameObject.GetComponent<Creature>();
-            manager.startFight(creatures[0],c);
+            manager.startFight(creatures[0], c);
             inFight = true;
         }
+        if (coll.tag.Equals("Spawn") )
+        {
+            Vector3 v = coll.GetComponent<SpawnPoint>().destination.transform.position;
+            transform.position = v;
+            Camera.main.transform.position = v;
+        }
+    }
+
+    public void looseCreature(Creature c) {
+        creatures.Remove(c);
+        Destroy(c.gameObject);
     }
 }
