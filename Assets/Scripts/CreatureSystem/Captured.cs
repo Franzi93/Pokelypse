@@ -8,8 +8,8 @@ public class Captured : MonoBehaviour {
     public Job currentJob;
 
     public Transform target;
-    public float speed;
-    public float spaceToPlayer;
+    public float speed = 1;
+    public float spaceToPlayer = 1;
     
 
     // Update is called once per frame

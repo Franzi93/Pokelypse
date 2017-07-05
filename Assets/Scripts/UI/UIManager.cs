@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour {
 
     public void startFight(Creature _player, Creature _enemy) {
         fightUI.enemy = _enemy;
-        fightUI.player = _player;
+        fightUI.playerCreature = _player;
         fightUI.gameObject.SetActive(true);
     }
 
