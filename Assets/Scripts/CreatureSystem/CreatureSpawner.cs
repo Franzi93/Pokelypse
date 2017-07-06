@@ -17,20 +17,19 @@ public class CreatureSpawner : MonoBehaviour {
     void Start () {
         spawnArea = GetComponent<BoxCollider2D>();
         maxSpawnPos = new Vector2(spawnArea.size.x / 2, spawnArea.size.y / 2);
-       
         spawn();
+       
 	}
-	
+    
 	// Update is called once per frame
 	void spawn () {
         do
         {
             int i = Random.Range(0, creaturesToSpawn.Count );
-            Creature spawn = Instantiate(creaturesToSpawn[i]);
-            spawnedCreatures.Add(spawn);
-            spawn.transform.parent = transform;
             Vector3 pos = new Vector3(Random.Range(-maxSpawnPos.x, maxSpawnPos.x), Random.Range(-maxSpawnPos.y, maxSpawnPos.y), 0);
-            spawn.transform.localPosition = pos;
+            creaturesToSpawn[i].transform.localPosition = pos;
+            Creature spawn = Instantiate(creaturesToSpawn[i],transform);
+            spawnedCreatures.Add(spawn);
             ++currSpawns;
 
         }

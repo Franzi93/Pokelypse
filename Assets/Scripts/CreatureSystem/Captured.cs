@@ -8,23 +8,20 @@ public class Captured : MonoBehaviour {
     public Job currentJob;
 
     public Transform target;
-    public float speed = 1;
     public float spaceToPlayer = 1;
-    
+    private NavMeshAgent2D nav;
+
+    void Start() {
+        nav = GetComponent<NavMeshAgent2D>();
+    }
 
     // Update is called once per frame
     void Update()
     {
-
-        //rotate to look at the player
-        transform.LookAt(target.position);
-        transform.Rotate(new Vector3(0, -90, 0), Space.Self);//correcting the original rotation
-
-
-        //move towards the player
+        
         if (Vector3.Distance(transform.position, target.position) > spaceToPlayer)
         {//move if distance from target is greater than 1
-            transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
+            nav.destination = target.position;
         }
     }
 
